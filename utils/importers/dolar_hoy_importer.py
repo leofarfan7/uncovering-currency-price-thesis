@@ -11,6 +11,16 @@ data_filename = "data_dolarhoycom10042025.csv"
 
 
 def dolar_hoy_importer():
+    """
+    Imports USD/ARS parallel exchange rate data from a CSV file and inserts new records into the MongoDB collection.
+
+    Reads data from the CSV file located in the DOLAR_HOY_DATA_DIR directory. For each record, it parses the date and price,
+    checks if the record already exists in the 'USD_ARS_Parallel' collection (using the timestamp as a unique key),
+    and inserts it if it does not exist. Tracks and prints the number of new records inserted.
+
+    Returns:
+        None
+    """
     new_data_counter = 0
     data = pd.read_csv(DOLAR_HOY_DATA_DIR / data_filename)
     for index, row in tqdm(data.iterrows(), total=data.shape[0], desc="Importing data", unit="record"):

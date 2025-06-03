@@ -11,6 +11,18 @@ economy_section_url = base_url + "/category/economia"
 
 
 def ahoradigital_scraper(timestamp_limit, debug):
+    """
+    Scrapes articles from the 'Economía' section of the Ahoradigital website, starting from the most recent,
+    and saves new articles to the MongoDB collection 'USD_BOB_Parallel' until an article older than
+    `timestamp_limit` is found.
+
+    Args:
+        timestamp_limit (datetime): The oldest article date to scrape. Stops scraping when an article older than this is found.
+        debug (bool): If True, prints debug information during scraping.
+
+    Returns:
+        int: Returns 0 when the scraping process is stopped due to reaching the timestamp limit.
+    """
     current_page = 1
     while True:
         articles_page = economy_section_url + f"/page/{current_page}"
@@ -53,6 +65,21 @@ def ahoradigital_scraper(timestamp_limit, debug):
 
 
 def article_page_scraper(url):
+    """
+    Scrapes a page of articles from the given URL in the 'Economía' section of Ahoradigital.
+
+    Args:
+        url (str): The URL of the articles page to scrape.
+
+    Returns:
+        list: A list of dictionaries, each containing information about an article:
+            - title (str): The article's title.
+            - url (str): The URL to the full article.
+            - date (datetime): The publication date of the article.
+            - teaser (None): Placeholder for teaser text (currently always None).
+
+    Prints an error message if the page cannot be retrieved.
+    """
     # Send an HTTP GET request to the URL
     response = requests.get(url, headers=USER_AGENT_HEADERS)
 
@@ -75,11 +102,19 @@ def article_page_scraper(url):
             articles_list.append(article_dict)
         return articles_list
     else:
-        # TODO: See what to do with errors. Maybe write all of them to a file?
         print(f"Failed to retrieve the page. Status code: {response.status_code}")
 
 
 def article_scraper(url):
+    """
+    Scrapes the full content of an article from the given URL on the Ahoradigital website.
+
+    Args:
+        url (str): The URL of the article to scrape.
+
+    Returns:
+        str: The full text content of the article, with paragraphs separated by newlines.
+    """
     # Send an HTTP GET request to the URL
     response = requests.get(url, headers=USER_AGENT_HEADERS)
 

@@ -12,6 +12,16 @@ economy_section_url = base_url + "/economia"
 
 
 def brujula_scraper(timestamp_limit, debug):
+    """
+    Scrapes articles from the 'Brújula Digital' economy section, saving new articles to MongoDB.
+
+    Args:
+        timestamp_limit (datetime): The earliest date for articles to scrape. Stops when an article older than this is found.
+        debug (bool): If True, prints debug information during scraping.
+
+    Returns:
+        int: Returns 0 when the scraping process is stopped due to reaching the timestamp limit.
+    """
     current_page = 1
     while True:
         articles_page = economy_section_url + f"/p={current_page}"
@@ -54,6 +64,21 @@ def brujula_scraper(timestamp_limit, debug):
 
 
 def article_page_scraper(url):
+    """
+    Scrapes a page of articles from the given URL in the 'Brújula Digital' economy section.
+
+    Args:
+        url (str): The URL of the articles page to scrape.
+
+    Returns:
+        list: A list of dictionaries, each containing information about an article:
+            - title (str): The article's title.
+            - url (str): The article's URL.
+            - date (datetime or str): The publication date as a datetime object if found, otherwise the URL.
+            - teaser (None): Placeholder for teaser text (currently always None).
+
+    Prints an error message if the page cannot be retrieved.
+    """
     # Send an HTTP GET request to the URL
     response = requests.get(url, headers=USER_AGENT_HEADERS)
 
@@ -87,11 +112,19 @@ def article_page_scraper(url):
                 articles_list.append(article_dict)
         return articles_list
     else:
-        # TODO: See what to do with errors. Maybe write all of them to a file?
         print(f"Failed to retrieve the page. Status code: {response.status_code}")
 
 
 def article_scraper(url):
+    """
+    Scrapes the main content of an article from the given URL.
+
+    Args:
+        url (str): The URL of the article to scrape.
+
+    Returns:
+        str: The full text content of the article, with paragraphs separated by newlines.
+    """
     # Send an HTTP GET request to the URL
     response = requests.get(url, headers=USER_AGENT_HEADERS)
 

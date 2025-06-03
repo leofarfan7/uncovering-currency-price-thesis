@@ -54,6 +54,24 @@ def el_diario_scraper(timestamp_limit, debug):
 
 
 def article_page_scraper(url, page):
+    """
+    Scrapes article metadata from a given El Diario economy section page.
+
+    Args:
+        url (str): The URL of the page to scrape.
+        page (int): The page number being scraped (used to determine section parsing).
+
+    Returns:
+        list: A list of dictionaries, each containing:
+            - title (str): The article's title.
+            - url (str): The article's URL.
+            - date (datetime): The publication date of the article.
+
+    Notes:
+        - For the first page, both highlighted (newest) and older articles are parsed.
+        - For subsequent pages, only older articles are parsed.
+        - If the request fails, prints an error message and returns None.
+    """
     # Send an HTTP GET request to the URL
     response = requests.get(url, headers=USER_AGENT_HEADERS)
 
@@ -99,11 +117,21 @@ def article_page_scraper(url, page):
             articles_list.append(article_dict)
         return articles_list
     else:
-        # TODO: See what to do with errors. Maybe write all of them to a file?
         print(f"Failed to retrieve the page. Status code: {response.status_code}")
 
 
 def article_scraper(url):
+    """
+    Scrapes the teaser and full content of an article from the given URL.
+
+    Args:
+        url (str): The URL of the article to scrape.
+
+    Returns:
+        tuple: A tuple containing:
+            - article_teaser (str or None): The teaser text of the article, or None if not found.
+            - article_text (str): The full text content of the article.
+    """
     # Send an HTTP GET request to the URL
     response = requests.get(url, headers=USER_AGENT_HEADERS)
 

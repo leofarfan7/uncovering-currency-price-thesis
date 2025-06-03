@@ -15,6 +15,26 @@ from utils.services import check_folder_structure, sleep_until_next_iteration, l
 
 
 def main(debug=False):
+    """
+    Main entry point for the bolivian_blue application.
+
+    This function orchestrates the periodic retrieval, processing, and aggregation of financial data
+    from various sources (Binance, CMV, DolarHoy, TradingView, newspapers) within defined working hours.
+    It also manages error handling, folder structure checks, and triggers data aggregation routines
+    outside of working hours.
+
+    Args:
+        debug (bool): If True, enables debug mode for data requests.
+
+    Workflow:
+        - Runs an infinite loop, checking the current time.
+        - During working hours (07:00 to 23:59), fetches and processes data at intervals defined by RECORD_INTERVAL.
+        - Requests DolarHoy and CMV data at specific times and only once per day.
+        - Fetches Binance data for USDT/BOB and USDT/ARS pairs.
+        - Outside working hours, processes TradingView data, updates daily/monthly/quarterly averages,
+          scrapes newspapers, and then exits.
+        - Handles connection errors by retrying after a delay.
+    """
     print("\nWelcome to bolivian_blue.\n")
     print("Starting execution...\n")
 

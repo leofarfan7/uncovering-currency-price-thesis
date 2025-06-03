@@ -12,6 +12,16 @@ economy_section_url = base_url + "/blog/section/pais"
 
 
 def opinion_scraper(timestamp_limit, debug):
+    """
+    Scrapes opinion articles from the specified section, processes them, and stores new articles in the database.
+
+    Args:
+        timestamp_limit (datetime): The earliest date for articles to be scraped. Articles older than this will stop the scraper.
+        debug (bool): If True, prints debug information during scraping.
+
+    Returns:
+        int: Returns 0 when the scraper stops due to reaching the timestamp limit.
+    """
     current_page = 1
     while True:
         articles_page = economy_section_url + f"/?page={current_page}"
@@ -54,6 +64,16 @@ def opinion_scraper(timestamp_limit, debug):
 
 
 def article_page_scraper(url):
+    """
+    Scrapes a page containing a list of articles and extracts metadata for each article.
+
+    Args:
+        url (str): The URL of the articles page to scrape.
+
+    Returns:
+        list: A list of dictionaries, each containing the title, URL, date, and teaser of an article.
+              Returns an empty list if the request fails or no articles are found.
+    """
     # Send an HTTP GET request to the URL
     response = requests.get(url, headers=USER_AGENT_HEADERS)
 
@@ -84,11 +104,20 @@ def article_page_scraper(url):
             articles_list.append(article_dict)
         return articles_list
     else:
-        # TODO: See what to do with errors. Maybe write all of them to a file?
         print(f"Failed to retrieve the page. Status code: {response.status_code}")
 
 
 def article_scraper(url):
+    """
+    Scrapes the main content of an article from the given URL.
+
+    Args:
+        url (str): The URL of the article to scrape.
+
+    Returns:
+        str: The full text content of the article, with paragraphs separated by newlines.
+             Returns an empty string if the request fails or content is not found.
+    """
     # Send an HTTP GET request to the URL
     response = requests.get(url, headers=USER_AGENT_HEADERS)
 

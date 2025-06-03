@@ -11,6 +11,16 @@ economy_section_url = LOS_TIEMPOS_URL + "/hemeroteca/seccion/actualidad-1/seccio
 
 
 def los_tiempos_scraper(timestamp_limit, debug):
+    """
+    Scrapes articles from the Los Tiempos economy section and stores them in MongoDB.
+
+    Args:
+        timestamp_limit (datetime): The earliest date to scrape articles for. Articles older than this will stop the scraper.
+        debug (bool): If True, prints debug information during scraping.
+
+    Returns:
+        int: Returns 0 when the scraper stops due to reaching the timestamp limit.
+    """
     current_page = 0
     while True:
         articles_page = economy_section_url + f"&page={current_page}"
@@ -53,6 +63,21 @@ def los_tiempos_scraper(timestamp_limit, debug):
 
 
 def article_page_scraper(url):
+    """
+    Scrapes a page of article listings from the given URL in the Los Tiempos economy section.
+
+    Args:
+        url (str): The URL of the article listing page to scrape.
+
+    Returns:
+        list: A list of dictionaries, each containing information about an article:
+            - title (str): The article's title.
+            - url (str): The full URL to the article.
+            - date (datetime): The publication date of the article.
+            - teaser (None): Placeholder for teaser text (currently always None).
+
+    Prints an error message if the request fails.
+    """
     # Send an HTTP GET request to the URL
     response = requests.get(url, headers=USER_AGENT_HEADERS)
 
@@ -78,11 +103,20 @@ def article_page_scraper(url):
             articles_list.append(article_dict)
         return articles_list
     else:
-        # TODO: See what to do with errors. Maybe write all of them to a file?
         print(f"Failed to retrieve the page. Status code: {response.status_code}")
 
 
 def article_scraper(url):
+    """
+    Scrapes the main content of a news article from the given URL.
+
+    Args:
+        url (str): The URL of the article to scrape.
+
+    Returns:
+        str: The concatenated text content of all paragraphs in the article body,
+             separated by newline characters. Returns an empty string if the request fails.
+    """
     # Send an HTTP GET request to the URL
     response = requests.get(url, headers=USER_AGENT_HEADERS)
 

@@ -11,6 +11,16 @@ economy_section_url = ECONOMY_URL + "/blog/section/economia"
 
 
 def economy_scraper(timestamp_limit, debug):
+    """
+    Scrapes articles from the economy section, saving new articles to the database until a timestamp limit is reached.
+
+    Args:
+        timestamp_limit (datetime): The earliest article date to scrape. Scraping stops when an article older than this is found.
+        debug (bool): If True, prints debug information during scraping.
+
+    Returns:
+        int: 0 when the timestamp limit is reached.
+    """
     current_page = 1
     while True:
         articles_page = economy_section_url + f"/?page={current_page}"
@@ -53,6 +63,16 @@ def economy_scraper(timestamp_limit, debug):
 
 
 def article_page_scraper(url):
+    """
+    Fetches and parses a page of economy articles, extracting metadata for each article.
+
+    Args:
+        url (str): The URL of the economy section page to scrape.
+
+    Returns:
+        list: A list of dictionaries, each containing the title, URL, date, and teaser of an article.
+              Returns an empty list if the request fails.
+    """
     # Send an HTTP GET request to the URL
     response = requests.get(url, headers=USER_AGENT_HEADERS)
 
@@ -78,11 +98,19 @@ def article_page_scraper(url):
             articles_list.append(article_dict)
         return articles_list
     else:
-        # TODO: See what to do with errors. Maybe write all of them to a file?
         print(f"Failed to retrieve the page. Status code: {response.status_code}")
 
 
 def article_scraper(url):
+    """
+    Fetches and extracts the main text content from an article page.
+
+    Args:
+        url (str): The URL of the article to scrape.
+
+    Returns:
+        str: The extracted article text, or an empty string if not found.
+    """
     # Send an HTTP GET request to the URL
     response = requests.get(url, headers=USER_AGENT_HEADERS)
 
@@ -91,8 +119,10 @@ def article_scraper(url):
         article_text = ""
         soup = BeautifulSoup(response.text, 'html5lib')
         try:
+            # Try to find the main article content
             article_body = soup.find('div', class_='content-data').find('div', class_='body').find_all('p')
         except AttributeError:
+            # Fallback for articles with video content
             article_body = soup.find('div', class_='video-data').find('div', class_='body').find_all('p')
         for paragraph in article_body:
             article_text += paragraph.text.strip() + "\n"

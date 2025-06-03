@@ -12,6 +12,16 @@ economy_section_url = FIDES_URL + "/economia"
 
 
 def fides_scraper(timestamp_limit, debug):
+    """
+    Scrapes articles from the Fides economy section, saving new articles to MongoDB.
+
+    Args:
+        timestamp_limit (datetime): The earliest date for articles to scrape. Stops when an article older than this is found.
+        debug (bool): If True, prints debug information during scraping.
+
+    Returns:
+        int: 0 when the scraper stops due to reaching the timestamp limit.
+    """
     current_page = 1
     while True:
         articles_page = economy_section_url + f"/?page={current_page}"
@@ -54,6 +64,23 @@ def fides_scraper(timestamp_limit, debug):
 
 
 def article_page_scraper(url):
+    """
+    Scrapes a Fides economy section page for article metadata.
+
+    Args:
+        url (str): The URL of the Fides economy section page to scrape.
+
+    Returns:
+        list: A list of dictionaries, each containing metadata for an article:
+            - title (str): The article's title.
+            - url (str): The full URL to the article.
+            - date (datetime): The publication date and time as a datetime object.
+            - teaser (None): Placeholder for teaser text (currently always None).
+
+    Notes:
+        - If the HTTP request fails, prints an error message and returns None.
+        - Expects the date string in the format: 'DD de <mes>, YYYY - HH:MM' (Spanish).
+    """
     # Send an HTTP GET request to the URL
     response = requests.get(url, headers=USER_AGENT_HEADERS)
 
@@ -96,11 +123,20 @@ def article_page_scraper(url):
             articles_list.append(article_dict)
         return articles_list
     else:
-        # TODO: See what to do with errors. Maybe write all of them to a file?
         print(f"Failed to retrieve the page. Status code: {response.status_code}")
 
 
 def article_scraper(url):
+    """
+    Scrapes the main content of a Fides article.
+
+    Args:
+        url (str): The URL of the article to scrape.
+
+    Returns:
+        str: The full text content of the article, with paragraphs separated by newlines.
+             Returns an empty string if the request fails or content is not found.
+    """
     # Send an HTTP GET request to the URL
     response = requests.get(url, headers=USER_AGENT_HEADERS)
 
