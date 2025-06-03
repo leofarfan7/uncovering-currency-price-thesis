@@ -1,0 +1,28 @@
+{
+  "binance_currencies": {
+    "BOB": [
+      "USDT"
+    ],
+    "ARS": [
+      "USDT"
+    ]
+  },
+  "tradingview_symbols": {
+    "USDTARS": [
+      {
+        "exchange": "BINANCE",
+        "date_available": "2023-05-01"
+      },
+      {
+        "exchange": "BITSO",
+        "date_available": "2023-05-01"
+      }
+    ],
+    "USDARS": [
+      {
+        "exchange": "FX_IDC",
+        "date_available": "2010-01-04"
+      }
+    ]
+  }
+}

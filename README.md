@@ -1,0 +1,1 @@
+# Uncovering the Currency Price in an Unsustainable Fixed Exchange Rate Regime Using a Stablecoin: The Case of Bolivia
