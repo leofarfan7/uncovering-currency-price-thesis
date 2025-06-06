@@ -54,6 +54,12 @@ provide a ready-to-use solution.
 
 Nonetheless, the code can be used to collect the same data as in the thesis, for further research or analysis.
 
+---
+
+## 💽 Datasets
+
+The processed datasets may be updated from time to time for research and analysis purposes.
+
 ## 📜 License
 
 MIT – see `LICENSE` for full text.  
