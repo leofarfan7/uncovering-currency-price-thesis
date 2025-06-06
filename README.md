@@ -1,7 +1,7 @@
 # Uncovering the Currency Price in an Unsustainable Fixed Exchange Rate Regime Using a Stablecoin: The Case of Bolivia
 
-_A companion repository for the BSc thesis  
-“Uncovering the Currency Price in an Unsustainable Fixed Exchange-Rate Regime”_
+_A companion repository for the BSc thesis_ [_“Uncovering the Currency Price in an Unsustainable Fixed Exchange-Rate
+Regime”_](https://university-domain.edu/path/to/thesis.pdf)
 
 ![Python 3.10+](https://img.shields.io/badge/python-%E2%89%A53.10-blue)
 ![MongoDB](https://img.shields.io/badge/database-mongodb-green)
@@ -46,54 +46,13 @@ _A companion repository for the BSc thesis
 
 ---
 
-## 🔧 Quick start
+## 🚨 Purpose
 
-### 1 · Prerequisites
+This repository contains the code used to collect and process the data for the thesis. Although the code could run as is
+in any machine, the intention is to demonstrate the methodology and workflow used to gather the data, rather than to
+provide a ready-to-use solution.
 
-* **Python 3.10 – 3.12**
-* **MongoDB 6+** running locally or reachable over the network  
-  Default settings are `localhost:27017`; edit `MONGO_HOST`, `MONGO_PORT` in `config.py` if needed.
-
-### 2 · Installation
-
-```bash
-git clone https://github.com/your-handle/bolivian_blue.git
-cd bolivian_blue
-
-# create & activate a virtual env
-python -m venv .venv
-source .venv/bin/activate          # Windows: .venv\Scripts\Activate
-
-# install deps (≈ 150 packages inc. tvdatafeed, pymongo, bs4, openai …)
-pip install --upgrade pip
-pip install -r requirements.txt
-```
-
-### 3 · First run
-
-```bash
-# make sure MongoDB is up, then:
-python main.py
-```
-
-*The loop will stay alive between **07:00 and 23:59 America/La_Paz**.  
-Outside that window it fetches end-of-day sources, rolls up aggregates and exits.*
-
-> **Debug mode** – to dump every raw response for troubleshooting:
-> ```python
-> from main import main
-> main(debug=True)
-> ```
-
-## ⚙️ Configuration knobs
-
-| File                       | What to edit                                              |
-|----------------------------|-----------------------------------------------------------|
-| `settings.json`            | Add new Binance fiat pairs or TradingView tickers         |
-| `utils/blocked_users.json` | Append bad actors’ Binance nicknames                      |
-| `config.py`                | Folder locations, record interval (`RECORD_INTERVAL = 5`) |
-
----
+Nonetheless, the code can be used to collect the same data as in the thesis, for further research or analysis.
 
 ## 📜 License
 
